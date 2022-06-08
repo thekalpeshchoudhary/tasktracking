@@ -4,7 +4,6 @@ import Tasks from './components/Tasks'
 import { useState, React } from "react"
 
 function App() {
-    let name = 'Kalpesh'
     const [tasks, setTasks]= useState([
         {
             id: 1,
@@ -32,14 +31,28 @@ function App() {
         },
     ])
 
-    // Deelte a Task
-    const delTask = (id)=>{
-        setTasks(tasks.filter((task) => task.id !== id ))
+    // Delete a Task
+    const delTask = (id) => {
+        setTasks(
+            tasks.filter((task) => 
+                task.id !== id 
+            )
+        )
     }
+
+    // Toggle reminder
+    const togTaskRem = (id) => {
+        setTasks(
+            tasks.map((task) => 
+                task.id === id ? { ...task, reminder: !task.reminder } : task
+            )
+        )
+    }
+
     return (
       <div className='container'>
         <Header title='Task Tracker'></Header>
-        {tasks.length > 0 ? <Tasks onDelete={delTask} tasks={tasks}/> : 'No Tasks Added'}
+        {tasks.length > 0 ? <Tasks onDelete={delTask} onToggle={togTaskRem} tasks={tasks}/> : 'No Tasks Added'}
       </div>
     );
 }
