@@ -1,9 +1,12 @@
 import './App.css'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
 import { useState, React } from "react"
 
 function App() {
+
+    const [showAddTask, setAddForm] = useState(false)
     const [tasks, setTasks]= useState([
         {
             id: 1,
@@ -31,6 +34,13 @@ function App() {
         },
     ])
 
+    // Add a task
+    const addTask = (task) => {
+        const id = Math.floor(Math.random()*10000) + 1
+        const newTask = { id, ...task }
+        setTasks([...tasks,newTask])
+    }
+
     // Delete a Task
     const delTask = (id) => {
         setTasks(
@@ -51,7 +61,8 @@ function App() {
 
     return (
       <div className='container'>
-        <Header title='Task Tracker'></Header>
+        <Header formState={showAddTask} onAddClk={()=> setAddForm(!showAddTask)} title='Task Tracker'></Header>
+        {showAddTask && <AddTask onAdd={addTask}></AddTask>}
         {tasks.length > 0 ? <Tasks onDelete={delTask} onToggle={togTaskRem} tasks={tasks}/> : 'No Tasks Added'}
       </div>
     );
